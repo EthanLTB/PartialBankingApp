@@ -1,6 +1,7 @@
 package com.coderscampus.assignment13.web;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.coderscampus.assignment13.domain.Account;
-import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.AccountService;
-import com.coderscampus.assignment13.service.AddressService;
 import com.coderscampus.assignment13.service.UserService;
 
 @Controller
@@ -22,8 +21,7 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private AddressService addressService;
+	
 	@Autowired AccountService accountService;
 	
 	@GetMapping("/register")
@@ -54,7 +52,7 @@ public class UserController {
 	
 	@GetMapping("/users/{userId}")
 	public String getOneUser (ModelMap model, @PathVariable Long userId) {
-		User user = userService.findByIdAndAccounts(userId);
+		User user =  userService.findByIdAndAccounts(userId);
 
 		model.put("users", Arrays.asList(user));
 		model.put("user", user);
@@ -65,24 +63,40 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}/accounts/{accountId}")
-	public String getOneAccount (ModelMap model, @PathVariable Long userId, Long accountId) {
-		model.put("user", userService.findByIdAndAccounts(userId));
-		model.put("account", accountService.findAccount(accountId));
+	public String getOneAccount (ModelMap model, @PathVariable Long accountId, Long userId) {
+		Account account = accountService.findAccount(accountId);
+		model.put("account", account);
+		
 		return "account";
 		
 	}
+	@PostMapping("/users/{userId}/accounts")
+	public String createOneAccount( @PathVariable Long userId) {
+		User user = userService.findByIdAndAccounts(userId);
+		Account account = new Account();
+		user.getAccounts().add(account);
+		account.getUsers().add(user);
+		account.setAccountName("Account #"+user.getAccounts().size());
+		accountService.save(account);
+		
+		
+		return "redirect:/users/"+userId+"/accounts/"+account.getAccountId();
+	}
 	
 	@PostMapping("/users/{userId}/accounts/{accountId}")
-	public String PostOneAccount (Account account, @PathVariable Long userId, Long accountId) {
+	public String PostOneAccount (Account account, @PathVariable Long userId) {
+		User user = userService.findByIdAndAccounts(userId);
+		user = userService.saveUser(user);
+		account = accountService.save(account);
 	
-		accountService.save(account);
-		return "redirect:/users/{userId}/accounts/"+account.getAccountId();
+		return "redirect:/users/"+ userId +"/accounts/"+account.getAccountId();
 		
 	}
 	
 	
 	@PostMapping("/users/{userId}")
 	public String postOneUser (@PathVariable Long userId, User user) {
+//		alternative to thymeleaf hidden input accounts
 //		User currentUser = userService.findByIdAndAccounts(userId);
 //		user.setAccounts(currentUser.getAccounts());
 		

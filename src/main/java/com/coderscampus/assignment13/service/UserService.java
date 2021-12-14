@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coderscampus.assignment13.domain.Account;
-import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.AccountRepository;
-import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 
 @Service
@@ -20,8 +18,7 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepo;
-//	@Autowired
-//	private AddressRepository addressRepo;
+
 	@Autowired
 	private AccountRepository accountRepo;
 	
@@ -77,8 +74,10 @@ public class UserService {
 		userRepo.deleteById(userId);
 	}
 
-//	public User findByIdWithAccounts(Long userId) {
-//		userRepo.findByIdAndAccounts(userId);
-//		return null;
-//	}
+	public User findById(Long userId) {
+		userRepo.findById(userId);
+		return null;
+	}
+
+
 }
