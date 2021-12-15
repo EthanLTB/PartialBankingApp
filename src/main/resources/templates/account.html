@@ -6,20 +6,21 @@
 <body>
 	<h1 th:text="${account.accountName}"></h1>
 
-	
-		
-		
-		<form action="" method="post">
+
+
+
+	<form action="" method="post">
 		<div>
 			Account Name: <input type="text" th:field="${account.accountName}" />
 		</div>
 		<div>
-		<input type="submit" value="Save Account" />
+			<input type="submit" value="Save Account" />
 		</div>
-		</form>
-		<div>
-		 <a th:href="@{/users}">Back</a>
-		 </div>
-	
+	</form>
+	<hr>
+	<div>
+		<a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
+	</div>
+
 </body>
 </html>

@@ -44,30 +44,34 @@
 
 
 
-			<div>
+			<div style="margin-top: 20px;">
 				<input type="submit" value="Update User Account" />
 			</div>
 		</form>
 		<form th:action="@{/users/{userId}/delete(userId=${user.userId})}"
 			method="post">
-			<input type="submit" value="Delete User Account" /> <a
-				th:href="@{/users}">Back to users</a>
+			<input type="submit" value="Delete User Account" />
 		</form>
 		<div>
-		<form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="post">
-			<h1>Accounts</h1>
+			<form th:action="@{/users/{userId}/accounts(userId=${user.userId})}"
+				method="post">
+				<h1>Accounts</h1>
 
-			<div th:each="account : ${user.accounts}">
-				<a
-					th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
-					th:text="${account.accountName}"></a>
-			</div>
+				<div th:each="account : ${user.accounts}">
+					<a
+						th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
+						th:text="${account.accountName}"></a>
+				</div>
 
-			
-				
-				<input type="submit" value="Create New Account" />
+
+
+				<input style="margin-top: 20px;" type="submit" value="Create New Account" />
 
 			</form>
+<div style="margin-top: 20px;">
+<a  th:href="@{/users}">Back</a>
+</div>
+			
 		</div>
 	</div>
 
@@ -78,8 +82,8 @@
 			th:text="${user.password}"></span>
 		<div th:each="account : ${user.accounts}">
 			<a
-					th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
-					th:text="${account.accountName}"></a>
+				th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
+				th:text="${account.accountName}"></a>
 
 		</div>
 		<hr>
